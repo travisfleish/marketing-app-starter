@@ -51,7 +51,7 @@ npm run preview --workspace=marketing-app-starter
 | `src/app/routes.tsx` | Route table. |
 | `src/app/providers.tsx` | `BrowserRouter` (and room for future providers). |
 | `src/app/seo.ts` | Lightweight `document.title` / meta description updates. |
-| `src/components/common/` | Reusable section helpers: `PageHero`, `SectionIntro`, `CTASection`. |
+| `src/components/common/` | Reusable section helpers: `PageHero`, `SectionIntro`. |
 | `src/components/navigation/` | `SiteHeader`, `SiteFooter` shells driven by `content/site.ts`. |
 | `src/content/site.ts` | Placeholder site metadata, nav, footer, and home copy. |
 | `src/pages/` | Example pages (`HomePage`, `NotFoundPage`). |
@@ -81,4 +81,4 @@ Do **not** duplicate button/card/modal styling or token definitions here; import
 ## Notes
 
 - **`framer-motion`** is listed as a dependency because the UI package declares it as a peer dependency (used by components such as `Modal` and `Accordion` if you import them later).
-- The package `Button` renders a `<button>`. For anchor-style CTAs, use action **slots** on `PageHero` / `CTASection`, plain links in the header/footer content model, or add a link-capable primitive to the shared package in a follow-up.
+- The package `Button` renders a `<button>`. For anchor-style CTAs, use action **slots** on `PageHero`, plain links in the header/footer content model, or add a link-capable primitive to the shared package in a follow-up.

@@ -20,7 +20,6 @@ export const siteContent = {
     nav: [
       { label: 'Overview', to: '/' },
       { label: 'Solutions', to: '/', hash: 'solutions' },
-      { label: 'Contact', to: '/', hash: 'contact' },
     ] satisfies NavItem[],
     cta: {
       label: 'Get started',
@@ -65,7 +64,7 @@ export const siteContent = {
       eyebrow: 'Marketing starter',
       title: 'Launch campaign pages with a consistent shell',
       description:
-        'This page composes shared primitives—layout, typography, buttons, and cards—with small local helpers for heroes, intros, and CTAs. Replace copy and routes for your next site.',
+        'This page composes shared primitives—layout, typography, buttons, and cards—with small local helpers for heroes and section intros. Replace copy and routes for your next site.',
     },
     intro: {
       eyebrow: 'Pattern',
@@ -92,10 +91,6 @@ export const siteContent = {
           body: 'Add providers, analytics, or CMS data in app code without touching the package.',
         },
       ],
-    },
-    cta: {
-      title: 'Ready to customize?',
-      description: 'Use this band for newsletter signups, demo requests, or secondary conversion goals.',
     },
   },
 }

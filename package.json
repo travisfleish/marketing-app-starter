@@ -9,13 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@genius-sports/gs-marketing-ui": "file:../../gs-marketing-ui/gs-marketing-ui",
+    "@genius-sports/gs-marketing-ui": "git+https://github.com/travisfleish/gs-marketing-ui.git#main",
     "framer-motion": "^12.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@types/node": "^25.5.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
