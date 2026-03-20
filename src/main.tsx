@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client'
-/* Design system CSS must load in this file before @tailwind (see styles/index.css @import). */
 import './styles/index.css'
 import { Providers } from './app/providers'
 import { App } from './app/App'

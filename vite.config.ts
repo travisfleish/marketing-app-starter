@@ -5,8 +5,9 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     dedupe: ['react', 'react-dom'],
+    preserveSymlinks: true,
   },
   optimizeDeps: {
-    include: ['@genius-sports/gs-marketing-ui'],
+    exclude: ['@genius-sports/gs-marketing-ui'],
   },
 })

@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@genius-sports/gs-marketing-ui": "file:../packages/gs-marketing-ui",
+    "@genius-sports/gs-marketing-ui": "file:../../gs-marketing-ui/gs-marketing-ui",
     "framer-motion": "^12.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

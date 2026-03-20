@@ -1,5 +1,6 @@
-@import '@genius-sports/gs-marketing-ui/styles/index.css';
+@import "@genius-sports/gs-marketing-ui/styles";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
