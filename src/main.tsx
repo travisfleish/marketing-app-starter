@@ -1,0 +1,14 @@
+import { createRoot } from 'react-dom/client'
+/* Design system CSS must load in this file before @tailwind (see styles/index.css @import). */
+import './styles/index.css'
+import { Providers } from './app/providers'
+import { App } from './app/App'
+
+const rootEl = document.getElementById('root')
+if (!rootEl) throw new Error('Root element not found')
+
+createRoot(rootEl).render(
+  <Providers>
+    <App />
+  </Providers>,
+)
