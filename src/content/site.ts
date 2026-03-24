@@ -1,5 +1,7 @@
 export type NavItem = {
   label: string
+  /** When set, this top-level item shows the active blue underline on matching in-app routes. */
+  activePathnames?: string[]
   href?: string
   children?: {
     label: string
@@ -104,6 +106,7 @@ export const siteContent = {
       },
       {
         label: 'Learn',
+        activePathnames: ['/learn'],
         children: [
           {
             label: 'Content Hub',

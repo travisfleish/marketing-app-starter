@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Chip, Heading, SectionShell, Text } from '@genius-sports/gs-marketing-ui'
+import { Heading, SectionShell, Text } from '@genius-sports/gs-marketing-ui'
 
 export type PageHeroProps = {
   eyebrow?: string
@@ -30,7 +30,7 @@ export function PageHero({
         }
       >
         {eyebrow ? (
-          <Chip className={isCenter ? 'mb-4' : 'mb-4 self-start'}>{eyebrow}</Chip>
+          <p className={isCenter ? 'hero-kicker' : 'hero-kicker self-start'}>{eyebrow}</p>
         ) : null}
         <Heading level="h1" className={isCenter ? 'max-w-4xl' : undefined}>
           {title}

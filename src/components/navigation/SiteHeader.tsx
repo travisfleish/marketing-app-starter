@@ -1,8 +1,14 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { GeniusStripHoverBg } from '@genius-sports/gs-marketing-ui'
 import geniusLogoUrl from '@genius-sports/gs-marketing-ui/assets/logos/genius_logo.svg?url'
-import { siteContent } from '../../content/site'
+import { siteContent, type NavItem } from '../../content/site'
+
+function navItemMatchesPath(item: NavItem, pathname: string): boolean {
+  if (!item.activePathnames?.length) return false
+  return item.activePathnames.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
+}
 
 const SCROLLED_HEADER_THRESHOLD = 60
 
@@ -123,6 +129,67 @@ function ProductsDropdownPanel({
   )
 }
 
+const SOLUTIONS_FEATURE_CARD = {
+  href: 'https://www.geniussports.com/customer-stories/fiba-u19-world-cup/',
+  imageSrc: '/FIBA.avif',
+  logoSrc:
+    'https://cms.geniussports.com/wp-content/uploads/2025/08/International_Basketball_Federation_logo.svg.png',
+  caption: 'FIBA U19 World Cup showcases AI innovation with GeniusIQ',
+} as const
+
+function SolutionsFeatureCard({ onLinkClick }: { onLinkClick?: () => void }) {
+  return (
+    <div className="ml-auto w-full space-y-4 lg:max-w-[29.5rem] lg:space-y-6">
+      <a
+        href={SOLUTIONS_FEATURE_CARD.href}
+        target="_blank"
+        rel="noreferrer"
+        onClick={onLinkClick}
+        className="group relative flex overflow-hidden rounded-[0.375rem] bg-green p-4 lg:p-5"
+      >
+        <div className="relative z-10 flex h-full min-h-[9.5625rem] w-full flex-col lg:min-h-[14rem]">
+          <div className="mb-12 flex h-8 w-[5rem] shrink-0 items-center">
+            <img
+              src={SOLUTIONS_FEATURE_CARD.logoSrc}
+              alt="International Basketball Federation logo"
+              loading="lazy"
+              width={1200}
+              height={589}
+              decoding="async"
+              className="h-full w-full object-contain object-left transition-opacity duration-200"
+            />
+          </div>
+          <span className="text-lead-lg mt-auto inline-flex font-heading font-medium tracking-[-0.0125em] text-white">
+            {SOLUTIONS_FEATURE_CARD.caption}
+          </span>
+          <div
+            className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-white text-black transition-transform duration-300 group-hover:rotate-0 group-hover:scale-100 lg:rotate-45 lg:scale-0"
+            aria-hidden
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 20 20" fill="none">
+              <path
+                d="M7.82912 7.55857L12.4409 7.55857M12.4409 7.55857L12.4409 12.1704M12.4409 7.55857L7.55786 12.4417"
+                stroke="currentColor"
+                strokeWidth="1.25"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+        <div className="absolute inset-0 z-[5] bg-gradient-to-t from-black" aria-hidden />
+        <img
+          src={SOLUTIONS_FEATURE_CARD.imageSrc}
+          alt="FIBA"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-200"
+        />
+      </a>
+    </div>
+  )
+}
+
 function SolutionsDropdownPanel({
   children,
   onLinkClick,
@@ -131,21 +198,98 @@ function SolutionsDropdownPanel({
   onLinkClick?: () => void
 }) {
   return (
-    <div className="grid grid-cols-2 gap-x-16 gap-y-8">
-      {children.map((section) => (
-        <div key={section.label} className="flex flex-col items-start text-left">
-          <SectionHeader
-            label={section.label}
-            href={section.href}
-            onClick={onLinkClick}
-            labelClassName="header-dropdown-section-title-font"
-            showIcon={false}
+    <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10 xl:gap-14">
+      <div className="grid min-w-0 flex-1 grid-cols-2 gap-x-16 gap-y-8">
+        {children.map((section) => (
+          <div key={section.label} className="flex flex-col items-start text-left">
+            <SectionHeader
+              label={section.label}
+              href={section.href}
+              onClick={onLinkClick}
+              labelClassName="header-dropdown-section-title-font"
+              showIcon={false}
+            />
+            {section.description ? (
+              <p className="mt-3 text-base font-normal leading-relaxed text-navy/75">{section.description}</p>
+            ) : null}
+          </div>
+        ))}
+      </div>
+      <SolutionsFeatureCard onLinkClick={onLinkClick} />
+    </div>
+  )
+}
+
+/** Vertical offsets (%) for the SAOT card equalizer — aligned to geniussports.com Learn menu */
+const SAOT_EQUALIZER_OFFSETS_PCT = [
+  10, 30, 0, 30, 5, 30, 5, 10, 0, 5, 0, 30, 0, 10, 30, 10, 30, 0, 10, 5, 0, 0, 10, 5, 0, 5, 0, 0, 10, 0, 5, 10, 0, 5,
+  10, 30, 5, 30, 30, 5, 0, 0, 30, 30, 5, 5, 0, 10,
+] as const
+
+const LEARN_SAOT_CARD = {
+  href: 'https://www.geniussports.com/perform/saot/',
+  imageSrc: '/SAOT.avif',
+  title: 'SAOT – Semi-Automated Offside Technology',
+  body: 'SAOT brings back the joy of the beautiful game to fans with instant, accurate decision making.',
+} as const
+
+function LearnSaotFeatureCard({ onLinkClick }: { onLinkClick?: () => void }) {
+  return (
+    <div className="w-full shrink-0 lg:w-[38%] lg:max-w-[30.9375rem]">
+      <a
+        href={LEARN_SAOT_CARD.href}
+        target="_blank"
+        rel="noreferrer"
+        onClick={onLinkClick}
+        className="group relative flex flex-col overflow-hidden rounded-lg bg-brightGreen p-4 text-navy transition-colors duration-200 hover:bg-brightGreen hover:text-navy md:h-full md:grow md:bg-purple md:text-white"
+      >
+        <div className="relative mb-4 flex h-[3.5rem] w-[3.5rem] items-center invert transition-colors duration-200 group-hover:invert md:mb-6 md:h-[4.375rem] md:w-[4.375rem] md:invert-0">
+          <img
+            src={LEARN_SAOT_CARD.imageSrc}
+            alt="SAOT"
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-contain"
           />
-          {section.description ? (
-            <p className="mt-3 text-base font-normal leading-relaxed text-navy/75">{section.description}</p>
-          ) : null}
         </div>
-      ))}
+
+        <div
+          className="absolute right-4 top-4 flex h-5 w-5 items-center justify-center rounded-full bg-black text-white transition-transform duration-300 group-hover:rotate-0 group-hover:scale-[1] md:right-6 md:top-6 lg:rotate-45 lg:scale-0"
+          aria-hidden
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M7.82912 7.55857L12.4409 7.55857M12.4409 7.55857L12.4409 12.1704M12.4409 7.55857L7.55786 12.4417"
+              stroke="currentColor"
+              strokeWidth="1.25"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+
+        <div className="mb-6 max-w-[19.875rem]">
+          <span className="mb-1 block font-heading text-xl font-medium tracking-[-0.0125em] lg:mb-2">
+            {LEARN_SAOT_CARD.title}
+          </span>
+          <p className="font-body text-[15px] leading-[1.4] tracking-[-0.009375em] opacity-80">
+            {LEARN_SAOT_CARD.body}
+          </p>
+        </div>
+
+        <div className="mt-auto flex h-[2.75rem] w-full items-end justify-between overflow-hidden">
+          {SAOT_EQUALIZER_OFFSETS_PCT.map((pct, i) => (
+            <div
+              key={i}
+              className="flex h-full flex-col items-center transition-transform duration-300"
+              style={{ transform: `translateY(${pct}%)` }}
+            >
+              <div className="h-[0.5rem] w-[0.0625rem] shrink-0 bg-purple transition-all duration-200 group-hover:bg-purple md:bg-brightGreen" />
+              <div className="h-full w-[0.2rem] bg-purple transition-all duration-200 group-hover:bg-purple md:bg-brightGreen" />
+            </div>
+          ))}
+        </div>
+      </a>
     </div>
   )
 }
@@ -158,32 +302,41 @@ function LearnDropdownPanel({
   onLinkClick?: () => void
 }) {
   return (
-    <div className="grid grid-cols-2 gap-x-16">
-      {children.map((section) => (
-        <div key={section.label} className="flex flex-col items-start text-left">
-          <SectionHeader
-            label={section.label}
-            href={section.href}
-            onClick={onLinkClick}
-            labelClassName="header-dropdown-section-title-font"
-            showIcon={false}
-          />
-          {section.description ? (
-            <p className="mt-3 text-base font-normal leading-relaxed text-navy/75">{section.description}</p>
-          ) : null}
-        </div>
-      ))}
+    <div className="flex flex-col gap-8 lg:flex-row lg:items-stretch lg:gap-10 xl:gap-14">
+      <div className="grid min-w-0 flex-1 grid-cols-2 gap-x-16 gap-y-8">
+        {children.map((section) => (
+          <div key={section.label} className="flex flex-col items-start text-left">
+            <SectionHeader
+              label={section.label}
+              href={section.href}
+              onClick={onLinkClick}
+              labelClassName="header-dropdown-section-title-font"
+              showIcon={false}
+            />
+            {section.description ? (
+              <p className="mt-3 text-base font-normal leading-relaxed text-navy/75">{section.description}</p>
+            ) : null}
+          </div>
+        ))}
+      </div>
+      <LearnSaotFeatureCard onLinkClick={onLinkClick} />
     </div>
   )
 }
 
 export function SiteHeader() {
+  const { pathname } = useLocation()
   const [isScrolled, setIsScrolled] = useState(false)
   const [openDesktopDropdown, setOpenDesktopDropdown] = useState<string | null>(null)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [expandedMobileSections, setExpandedMobileSections] = useState<Record<string, boolean>>({})
   const navItems = siteContent.header.nav
   const activeDropdownItem = navItems.find((item) => item.label === openDesktopDropdown && item.children?.length)
+
+  const highlightedNavLabel = useMemo(() => {
+    const routeMatch = navItems.find((item) => navItemMatchesPath(item, pathname))?.label
+    return routeMatch ?? openDesktopDropdown
+  }, [navItems, pathname, openDesktopDropdown])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -220,43 +373,60 @@ export function SiteHeader() {
       }`}
     >
       <div className="relative" onMouseLeave={() => setOpenDesktopDropdown(null)}>
-        <div className="container mx-auto flex h-full items-center gap-4 py-2">
+        <div className={openDesktopDropdown ? 'w-full border-b border-border' : 'w-full'}>
+          {/* No bottom padding: keeps nav underlines flush with the full-width border (reference). */}
+          <div className="container mx-auto flex items-center gap-4 py-2 md:items-stretch md:py-0 md:pt-2">
           <a
             href="https://www.geniussports.com"
             target="_blank"
             rel="noreferrer"
             aria-label="Genius Sports"
-            className="min-w-0 flex-shrink-0"
+            className="flex min-w-0 flex-shrink-0 items-center"
           >
             <img src={geniusLogoUrl} alt="Genius Sports" className="h-24 w-auto object-contain object-left" />
           </a>
 
-          <nav className="hidden items-center gap-8 md:ml-4 md:flex lg:gap-11">
+          <nav className="hidden items-stretch gap-8 md:ml-4 md:flex lg:gap-11">
             {navItems.map((item) => {
               const hasChildren = Boolean(item.children?.length)
               const isOpen = openDesktopDropdown === item.label
+              const isHighlighted = highlightedNavLabel === item.label
               const itemHref = item.href ?? '#'
+              /** Token: `--color-accent` / `--color-genius-blue` (#0011e1) via Tailwind `accent` in gs-marketing-ui preset */
+              const activeBar = (
+                <span
+                  aria-hidden
+                  className={`pointer-events-none absolute inset-x-0 z-[1] h-[3px] ${
+                    /* -bottom-px: overlap the 1px border so blue sits flush on the rule (reference). */
+                    isHighlighted ? '-bottom-px bg-accent' : 'bottom-0 bg-transparent'
+                  }`}
+                />
+              )
 
               return (
-                <div key={item.label} className="relative" onMouseEnter={() => hasChildren && setOpenDesktopDropdown(item.label)}>
+                <div
+                  key={item.label}
+                  className="relative flex h-full min-h-0"
+                  onMouseEnter={() => hasChildren && setOpenDesktopDropdown(item.label)}
+                >
                   {hasChildren ? (
                     <button
                       type="button"
-                      className={`inline-flex items-center gap-1.5 border-b-2 py-1.5 text-navy transition-colors ${
-                        isOpen ? '-mb-px border-blue-600' : 'border-transparent'
-                      }`}
+                      className="relative flex h-full w-full min-w-0 items-center gap-1.5 border-0 bg-transparent px-0 py-0 text-navy transition-colors"
                       aria-expanded={isOpen}
                     >
                       <span className="header-nav-link-font">{item.label}</span>
+                      {activeBar}
                     </button>
                   ) : (
                     <a
                       href={itemHref}
                       target="_blank"
                       rel="noreferrer"
-                      className="header-nav-link-font inline-flex items-center py-1.5 text-navy transition-colors hover:text-navy/70"
+                      className="header-nav-link-font relative flex h-full items-center text-navy transition-colors hover:text-navy/70"
                     >
                       {item.label}
+                      {activeBar}
                     </a>
                   )}
                 </div>
@@ -295,6 +465,7 @@ export function SiteHeader() {
               </span>
             )}
           </button>
+          </div>
         </div>
 
         <AnimatePresence>
@@ -384,7 +555,7 @@ export function SiteHeader() {
                           >
                             <div className="mb-1 mt-1 space-y-4 pl-6 pr-3">
                               {item.children?.map((child) => {
-                                if (child.children?.length) {
+                                if ('children' in child && child.children && child.children.length > 0) {
                                   return (
                                     <div key={child.label}>
                                       <a
@@ -432,7 +603,7 @@ export function SiteHeader() {
                                         ↗
                                       </span>
                                     </span>
-                                    {child.description ? (
+                                    {'description' in child && child.description ? (
                                       <span className="mt-1 block font-normal leading-relaxed text-navy/75">
                                         {child.description}
                                       </span>

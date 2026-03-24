@@ -10,7 +10,15 @@ const config: Config = {
     '../../gs-marketing-ui/gs-marketing-ui/dist/**/*.{js,mjs}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        green: '#17b26a',
+        /** Deep card purple (Learn mega-menu SAOT tile); matches geniussports.com tokens */
+        purple: '#2d0a4a',
+        /** Lime accent / hover state for SAOT featured card */
+        brightGreen: '#d4ff3c',
+      },
+    },
   },
   plugins: [],
 }
