@@ -1,14 +1,27 @@
 export type NavItem = {
   label: string
-  /** Pathname (e.g. `/` or `/about`) */
-  to: string
-  /** Optional in-page hash without `#` */
-  hash?: string
+  href?: string
+  children?: {
+    label: string
+    href: string
+    description?: string
+    children?: { label: string; href: string; description?: string }[]
+  }[]
 }
 
 export type FooterColumn = {
   title: string
   links: { label: string; href: string }[]
+}
+
+export type SocialLink = {
+  label: string
+  href: string
+}
+
+export type PolicyLink = {
+  label: string
+  href: string
 }
 
 export const siteContent = {
@@ -18,8 +31,94 @@ export const siteContent = {
   },
   header: {
     nav: [
-      { label: 'Overview', to: '/' },
-      { label: 'Solutions', to: '/', hash: 'solutions' },
+      {
+        label: 'Products',
+        children: [
+          {
+            label: 'Perform',
+            href: 'https://www.geniussports.com/perform/',
+            children: [
+              { label: 'Performance Analysis', href: 'https://www.geniussports.com/perform/' },
+              { label: 'AI Officiating', href: 'https://www.geniussports.com/perform/' },
+              { label: 'League Software', href: 'https://www.geniussports.com/perform/' },
+              { label: 'Integrity Services', href: 'https://www.geniussports.com/perform/' },
+            ],
+          },
+          {
+            label: 'Bet',
+            href: 'https://www.geniussports.com/bet/',
+            children: [
+              { label: 'Data & Odds APIs', href: 'https://www.geniussports.com/bet/' },
+              { label: 'Genius Trading Services', href: 'https://www.geniussports.com/bet/' },
+              { label: 'BetVision', href: 'https://www.geniussports.com/bet/' },
+            ],
+          },
+          {
+            label: 'Engage',
+            href: 'https://www.geniussports.com/engage/',
+            children: [
+              { label: 'FANHub', href: 'https://www.geniussports.com/engage/fanhub/' },
+              { label: 'Augmentation', href: 'https://www.geniussports.com/engage/' },
+              { label: 'Gamification', href: 'https://www.geniussports.com/engage/' },
+              {
+                label: 'Sports Data API',
+                href: 'https://www.geniussports.com/engage/official-sports-data-api/',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Solutions',
+        children: [
+          {
+            label: 'For Sports Leagues',
+            href: 'https://www.geniussports.com/sports-teams-leagues/',
+            description: 'Transform the way you capture and use data. For every stakeholder.',
+          },
+          {
+            label: 'For Brands',
+            href: 'https://www.geniussports.com/brands/',
+            description: 'Reach and engage sports fans efficiently. Beyond generic adtech.',
+          },
+          {
+            label: 'For Sportsbooks',
+            href: 'https://www.geniussports.com/sportsbooks/',
+            description: 'Be more profitable. Outsource trading, risk and more to the experts.',
+          },
+          {
+            label: 'For Content Owners',
+            href: 'https://www.geniussports.com/content-owners/',
+            description:
+              'Transform your broadcast, stream or highlight reel, and reimagine viewing experiences.',
+          },
+        ],
+      },
+      {
+        label: 'GeniusIQ',
+        href: 'https://www.geniussports.com/geniusiq/',
+      },
+      {
+        label: 'Customers',
+        href: 'https://www.geniussports.com/customer-stories/',
+      },
+      {
+        label: 'Learn',
+        children: [
+          {
+            label: 'Content Hub',
+            href: 'https://www.geniussports.com/content-hub/',
+            description:
+              'Head to our resources centre for the latest events, blog articles and webinars.',
+          },
+          {
+            label: 'Newsroom',
+            href: 'https://www.geniussports.com/newsroom/',
+            description:
+              'From the back page to the front page. See the latest press releases and Genius news.',
+          },
+        ],
+      },
     ] satisfies NavItem[],
     cta: {
       label: 'Get started',
@@ -28,31 +127,67 @@ export const siteContent = {
     },
   },
   footer: {
-    tagline: 'Placeholder marketing footer — swap links and copy for your launch.',
     columns: [
       {
-        title: 'Product',
+        title: 'Products',
         links: [
-          { label: 'Overview', href: '/#' },
-          { label: 'Pricing', href: '/#' },
+          { label: 'Perform', href: 'https://www.geniussports.com/perform/' },
+          { label: 'Engage', href: 'https://www.geniussports.com/engage/' },
+          { label: 'Bet', href: 'https://www.geniussports.com/bet/' },
+          { label: 'GeniusIQ', href: 'https://www.geniussports.com/geniusiq/' },
+          { label: 'Data Capture', href: 'https://www.geniussports.com/data-capture/' },
+          {
+            label: 'Sports Data API',
+            href: 'https://www.geniussports.com/engage/official-sports-data-api/',
+          },
+        ],
+      },
+      {
+        title: 'Solutions',
+        links: [
+          { label: 'Teams & Leagues', href: 'https://www.geniussports.com/sports-teams-leagues/' },
+          { label: 'Sportsbooks', href: 'https://www.geniussports.com/sportsbooks/' },
+          { label: 'Brands', href: 'https://www.geniussports.com/brands/' },
+          { label: 'Content Owners', href: 'https://www.geniussports.com/content-owners/' },
+          { label: 'Customers', href: 'https://www.geniussports.com/customer-stories/' },
+        ],
+      },
+      {
+        title: 'Learn',
+        links: [
+          { label: 'Content Hub', href: 'https://www.geniussports.com/content-hub/' },
+          { label: 'Newsroom', href: 'https://www.geniussports.com/newsroom/' },
+          { label: 'Podcast', href: 'https://www.geniussports.com/the-fan-engagement-podcast/' },
         ],
       },
       {
         title: 'Company',
         links: [
-          { label: 'About', href: '/#' },
-          { label: 'Careers', href: '/#' },
-        ],
-      },
-      {
-        title: 'Legal',
-        links: [
-          { label: 'Privacy', href: '/#' },
-          { label: 'Terms', href: '/#' },
+          { label: 'About', href: 'https://www.geniussports.com/about-us/' },
+          { label: 'Careers', href: 'https://www.geniussports.com/careers/' },
+          { label: 'Contact', href: 'https://www.geniussports.com/contact/' },
+          { label: 'For Investors', href: 'https://investors.geniussports.com/' },
+          {
+            label: 'Modern Slavery Transparency Statement 2024-2025',
+            href: 'https://www.geniussports.com/wp-content/uploads/2025/08/Modern-Slavery-Statement-2024-2025-Final.pdf',
+          },
+          { label: 'Legal', href: 'https://www.geniussports.com/legal/' },
         ],
       },
     ] satisfies FooterColumn[],
-    copyright: `© ${new Date().getFullYear()} Your Company. All rights reserved.`,
+    social: [
+      { label: 'X', href: 'https://x.com/geniussports' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/company/geniussports/' },
+      { label: 'Facebook', href: 'https://www.facebook.com/GeniusSports' },
+      { label: 'YouTube', href: 'https://www.youtube.com/channel/UCs30f29MkDPs7rnY12r2GSA' },
+    ] satisfies SocialLink[],
+    policyLinks: [
+      { label: 'Policies', href: 'https://www.geniussports.com/policies/' },
+      { label: 'Privacy Policy', href: 'https://www.geniussports.com/policies/privacy-policy/' },
+      { label: 'Cookie Policy', href: 'https://www.geniussports.com/policies/cookie-policy/' },
+      { label: 'Do Not Sell or Share My Information', href: 'https://www.geniussports.com/privacy-choices/' },
+    ] satisfies PolicyLink[],
+    copyright: `© ${new Date().getFullYear()} Genius Sports Group. All rights reserved.`,
   },
   home: {
     meta: {

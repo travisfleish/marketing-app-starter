@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@genius-sports/gs-marketing-ui": "git+https://github.com/travisfleish/gs-marketing-ui.git#main",
+    "@genius-sports/gs-marketing-ui": "github:travisfleish/gs-marketing-ui#main",
     "framer-motion": "^12.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
